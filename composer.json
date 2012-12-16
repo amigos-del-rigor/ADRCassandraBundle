@@ -1,0 +1,23 @@
+
+{
+    "name": "amigosdelrigor/cassandra-bundle",
+    "type": "symfony-bundle",
+    "description": "A Cassandra bundle for Symfony2",
+    "keywords": ["cassandra", "nosql", "symfony"],
+    "homepage": "https://github.com/amigos-del-rigor/ADRCassandraBundle",
+    "license": "MIT",
+    "authors": [{
+        "name": "Ricard Clau",
+        "email": "ricard.clau@gmail.com"
+    }],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle":">=2.1.0,<2.3-dev",
+        "thobbs/phpcassa":"dev-master"
+    },
+    "autoload": {
+        "psr-0": { "ADR\\Bundle\\CassandraBundle": "" }
+    },
+    "target-dir": "ADR/Bundle/CassandraBundle",
+    "minimum-stability": "dev"
+}

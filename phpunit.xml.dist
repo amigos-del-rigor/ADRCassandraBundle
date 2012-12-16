@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit colors="true" processIsolation="false" stopOnFailure="false" bootstrap="./Tests/bootstrap.php">
+    <testsuites>
+        <testsuite name="CassandraBundle Test Suite">
+            <directory>./Tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
