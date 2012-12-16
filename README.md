@@ -10,8 +10,8 @@ This bundle is also available via [composer](https://github.com/composer/compose
 
 ## Documentation ##
 
-[Read the documentation in Resources/doc/](https://github.com/snc/SncRedisBundle/blob/master/Resources/doc/index.md)
+[Read the documentation in Resources/doc/](https://github.com/amigos-del-rigor/ADRCassandraBundle/blob/master/Resources/doc/index.md)
 
 ## License ##
 
-See [Resources/meta/LICENSE](https://github.com/snc/SncRedisBundle/blob/master/Resources/meta/LICENSE).
+See [Resources/meta/LICENSE](https://github.com/amigos-del-rigor/ADRCassandraBundle/blob/master/Resources/meta/LICENSE).

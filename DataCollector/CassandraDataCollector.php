@@ -11,6 +11,10 @@
 
 namespace ADR\Bundle\CassandraBundle\DataCollector;
 
+use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * CassandraDataCollector
  */
@@ -22,5 +26,13 @@ class CassandraDataCollector extends DataCollector
     public function getName()
     {
         return 'cassandra';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function collect(Request $request, Response $response, \Exception $exception = null)
+    {
+        // TODO: Implement collect() method.
     }
 }
