@@ -1,0 +1,53 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+    <img width="20" height="28" alt="Cassandra" style="border-width: 0; vertical-align: middle; margin-right: 5px;" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QEFEzYU5Wwk8gAAAYhJREFUSMft1c+LzlEUx/HXGWOeyY+ZkUGoaRDDyKSkZufHxhTK0pqVjVIWkyXFivwPlorULKSsULKhpJSfUZo0CxYyyHNsjqfHNGQxq+m5dbv3fvuc9znfz7l1IzMt5OiywKMDXEzAiGjMOQd0/0fgRoxiP9bgThXyMiKeYxmG8RXPYr6LHRFjOIadWIdd+FETnqIf97AbU7iLFX8AI6IXlyvranzEbWzAdxzADC5iLc5jAu/Rh9MyU0GP4hLGSzyFCziFRmnG6/sQtmIzDpYNe9DVXWYex09cxaqq8DoGyr8s3Rge4FtpEtfwCTOZ2QyMoJmZLyKiB5vKgS84gmaBp7EPV8rLz7iFm3iFR5n5LsqffiyvwKHKOF3mb8FhfMCNatAozuINJjPzcasPWIJG23qyKujFGTzBbCXbjtfowUNMYj3eZuYstJpSpvfVOohtOIT7OIcdOIGJ0gxgb+27Wox24Bx41NUZKTuGsbR+OTA4b9zfgO0V137l78r+FROdJ6ADXIzAX2So0bIAcw6PAAAAAElFTkSuQmCC"/>
+    <span class="sf-toolbar-status">{{ collector.commandcount }}</span>
+    {% endset %}
+    {% set text %}
+    <div class="sf-toolbar-info-piece">
+        <b>Queries</b>
+        <span>{{ collector.commandcount }}</span>
+    </div>
+    <div class="sf-toolbar-info-piece">
+        <b>Query time</b>
+        <span>{{ '%0.2f'|format(collector.time) }} ms</span>
+    </div>
+    {% endset %}
+    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+    <span class="icon"><img src="{{ asset('bundles/adrcassandra/images/cassandra.png') }}" alt="Cassandra" /></span>
+    <strong>Cassandra</strong>
+    <span class="count">
+        <span>{{ collector.commandcount }}</span>
+        <span>{{ '%0.0f'|format(collector.time) }} ms</span>
+    </span>
+</span>
+{% endblock %}
+
+{% block panel %}
+    <h2>Commands</h2>
+
+    {% if not collector.commandcount %}
+        <p><em>No commands.</em></p>
+    {% else %}
+        <ul class="alt">
+            {% for command in collector.commands %}
+                <li class="{{ cycle(['odd', 'even'], loop.index) }}{% if command.error %} error{% endif %}">
+                    <div>
+                        <code>{{ command.cmd }}</code>
+                    </div>
+                    <small>
+                        <strong>Time</strong>: {{ '%0.2f'|format(command.executionMS) }} ms
+                        <strong>Connection</strong>: {{ command.conn }}
+                        {% if command.error %}<strong>Error</strong>: {{ command.error }}{% endif %}
+                    </small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
