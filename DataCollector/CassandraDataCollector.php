@@ -33,6 +33,44 @@ class CassandraDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        // TODO: Implement collect() method.
+        $this->data = array(
+//            'commands' => null !== $this->logger ? $this->logger->getCommands() : array(),
+            'commands' => array(),
+        );
+    }
+
+    /**
+     * Returns an array of collected commands.
+     *
+     * @return array
+     */
+    public function getCommands()
+    {
+        return $this->data['commands'];
+    }
+
+    /**
+     * Returns the number of collected commands.
+     *
+     * @return integer
+     */
+    public function getCommandCount()
+    {
+        return count($this->data['commands']);
+    }
+
+    /**
+     * Returns the execution time of all collected commands in seconds.
+     *
+     * @return float
+     */
+    public function getTime()
+    {
+        $time = 0;
+        foreach ($this->data['commands'] as $command) {
+            $time += $command['executionMS'];
+        }
+
+        return $time;
     }
 }
