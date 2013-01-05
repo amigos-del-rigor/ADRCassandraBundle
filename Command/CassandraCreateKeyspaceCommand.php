@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CassandraDropKeyspaceCommand extends ContainerAwareCommand
+class CassandraCreateKeyspaceCommand extends ContainerAwareCommand
 {
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
@@ -25,7 +25,7 @@ class CassandraDropKeyspaceCommand extends ContainerAwareCommand
     protected function configure()
     {
         parent::configure();
-        $this->setName('cassandra:keyspace:drop');
+        $this->setName('cassandra:keyspace:create');
     }
 
     /**
