@@ -24,7 +24,8 @@ class CassandraCreateKeyspaceCommand extends ContainerAwareCommand
      */
     protected function configure()
     {
-
+        parent::configure();
+        $this->setName('cassandra:keyspace:create');
     }
 
     /**
