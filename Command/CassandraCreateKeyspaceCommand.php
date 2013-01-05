@@ -4,7 +4,7 @@ namespace ADR\Bundle\CassandraBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\OutputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class CassandraCreateKeyspaceCommand extends ContainerAwareCommand
 {
