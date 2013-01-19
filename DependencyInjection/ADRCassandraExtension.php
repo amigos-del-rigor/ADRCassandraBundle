@@ -29,9 +29,9 @@ class ADRCassandraExtension extends Extension
 
     protected function loadCluster($name, array $cluster, ContainerBuilder $container)
     {
-        $definition = new Definition('phpcassa\Connection\ConnectionPool', array(
-            $cluster['keyspace'],
+        $definition = new Definition('ADR\Bundle\CassandraBundle\Client\Client', array(
             $cluster['servers'],
+            $cluster['keyspace'],
         ));
 
         $container->setDefinition('cassandra.cluster.' . $name, $definition);
