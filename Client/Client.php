@@ -65,4 +65,36 @@ class Client
 
         return $this->superColumnFamilies[$superColumnFamily];
     }
+
+    /**
+     * @param array $servers
+     */
+    public function setServers($servers)
+    {
+        $this->servers = $servers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getServers()
+    {
+        return $this->servers;
+    }
+
+    /**
+     * @param string $keyspace
+     */
+    public function setKeyspace($keyspace)
+    {
+        $this->keyspace = $keyspace;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKeyspace()
+    {
+        return $this->keyspace;
+    }
 }

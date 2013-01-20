@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use phpcassa\SystemManager;
 
 class CassandraCreateKeyspaceCommand extends ContainerAwareCommand
 {
@@ -28,10 +29,10 @@ class CassandraCreateKeyspaceCommand extends ContainerAwareCommand
         parent::configure();
         $this
             ->setName('cassandra:keyspace:create')
-            ->setDescription('Creates the keyspace in selected cluster')
+            ->setDescription('Creates the configured keyspace in selected cluster')
             ->addArgument('cluster', null, InputOption::VALUE_REQUIRED, 'The cluster name in Symfony2 where keyspace will be created')
             ->setHelp(<<<EOT
-The <info>cassandra:keyspace:create</info> command creates the keyspace in the selected cluster.
+The <info>cassandra:keyspace:create</info> command creates the configured keyspace in the selected cluster.
 
 <info>app/console cassandra:keyspace:create test</info>
 EOT
@@ -47,7 +48,11 @@ EOT
         $this->output = $output;
 
         $cluster = $this->getContainer()->get('cassandra.cluster.' . $input->getArgument('cluster'));
+        $clusterServers = $cluster->getServers();
 
+        $manager = new SystemManager($clusterServers[0]);
+        $manager->create_keyspace($cluster->getKeyspace(), array());
 
+        $output->writeln('<info>Keyspace ' . $cluster->getKeyspace() . ' successfully created at ' . $clusterServers[0] . '</info>');
     }
 }
