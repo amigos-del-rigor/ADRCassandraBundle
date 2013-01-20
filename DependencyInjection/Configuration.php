@@ -16,12 +16,11 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('adr_cassandra');
 
         $rootNode
-            ->fixXmlConfig('cluster')
             ->children()
                 ->arrayNode('clusters')
+                    ->useAttributeAsKey('name')
                     ->isRequired()
                     ->requiresAtLeastOneElement()
-                    ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->fixXmlConfig('server')
                         ->children()
