@@ -22,18 +22,28 @@ class ADRCassandraExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        foreach ($config['clusters'] as $name => $cluster) {
-            $this->loadCluster($name, $cluster, $container);
+        foreach ($config['clients'] as $name => $client) {
+            $this->createConnectionPoolClientService($name, $client, $container);
+            $this->createSystemManagerClientService($name, $client, $container);
         }
     }
 
-    protected function loadCluster($name, array $cluster, ContainerBuilder $container)
+    protected function createConnectionPoolClientService($name, array $client, ContainerBuilder $container)
     {
-        $definition = new Definition('ADR\Bundle\CassandraBundle\Client\Client', array(
-            $cluster['servers'],
-            $cluster['keyspace'],
+        $definition = new Definition('ADR\Bundle\CassandraBundle\Client\ConnectionPoolClient', array(
+            $client['servers'],
+            $client['keyspace'],
         ));
 
-        $container->setDefinition('cassandra.cluster.' . $name, $definition);
+        $container->setDefinition('cassandra.' . $name . '.pool', $definition);
+    }
+
+    protected function createSystemManagerClientService($name, array $client, ContainerBuilder $container)
+    {
+        $definition = new Definition('ADR\Bundle\CassandraBundle\Client\SystemManagerClient', array(
+            $client['servers'][0],
+        ));
+
+        $container->setDefinition('cassandra.' . $name . '.manager', $definition);
     }
 }

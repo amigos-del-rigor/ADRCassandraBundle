@@ -29,12 +29,13 @@ class CassandraDropKeyspaceCommand extends ContainerAwareCommand
         parent::configure();
         $this
             ->setName('cassandra:keyspace:drop')
-            ->setDescription('Drops the configured keyspace in selected cluster')
-            ->addArgument('cluster', null, InputOption::VALUE_REQUIRED, 'The cluster name in Symfony2 where keyspace will be created')
+            ->setDescription('Drops the keyspace in selected client')
+            ->addArgument('client', null, InputOption::VALUE_REQUIRED, 'The cluster name in Symfony2 where keyspace will be created')
+            ->addArgument('keyspace', null, InputOption::VALUE_REQUIRED, 'The keyspace name')
             ->setHelp(<<<EOT
 The <info>cassandra:keyspace:drop</info> command drops the configured keyspace in the selected cluster.
 
-<info>app/console cassandra:keyspace:drop test</info>
+<info>app/console cassandra:keyspace:drop [client] [keyspace]</info>
 EOT
         );
     }
@@ -47,13 +48,11 @@ EOT
         $this->input = $input;
         $this->output = $output;
 
-        $cluster = $this->getContainer()->get('cassandra.cluster.' . $input->getArgument('cluster'));
-        $clusterServers = $cluster->getServers();
+        $keyspace = $input->getArgument('keyspace');
 
-        $manager = new SystemManager($clusterServers[0]);
-        $manager->drop_keyspace($cluster->getKeyspace());
+        $manager = $this->getContainer()->get('cassandra.' . $input->getArgument('client') . '.manager');
+        $manager->drop_keyspace($keyspace);
 
-        $output->writeln('<info>Keyspace ' . $cluster->getKeyspace() . ' successfully dropped at ' . $clusterServers[0] . '</info>');
-
+        $output->writeln('<info>Keyspace ' . $keyspace . ' successfully dropped at ' . $manager->getServer() . '</info>');
     }
 }

@@ -30,11 +30,12 @@ class CassandraCreateKeyspaceCommand extends ContainerAwareCommand
         $this
             ->setName('cassandra:keyspace:create')
             ->setDescription('Creates the configured keyspace in selected cluster')
-            ->addArgument('cluster', null, InputOption::VALUE_REQUIRED, 'The cluster name in Symfony2 where keyspace will be created')
+            ->addArgument('client', null, InputOption::VALUE_REQUIRED, 'The client name in Symfony2 where keyspace will be created')
+            ->addArgument('keyspace', null, InputOption::VALUE_REQUIRED, 'The keyspace name')
             ->setHelp(<<<EOT
 The <info>cassandra:keyspace:create</info> command creates the configured keyspace in the selected cluster.
 
-<info>app/console cassandra:keyspace:create test</info>
+<info>app/console cassandra:keyspace:create [client] [keyspace]</info>
 EOT
             );
     }
@@ -47,12 +48,11 @@ EOT
         $this->input = $input;
         $this->output = $output;
 
-        $cluster = $this->getContainer()->get('cassandra.cluster.' . $input->getArgument('cluster'));
-        $clusterServers = $cluster->getServers();
+        $keyspace = $input->getArgument('keyspace');
 
-        $manager = new SystemManager($clusterServers[0]);
-        $manager->create_keyspace($cluster->getKeyspace(), array());
+        $manager = $this->getContainer()->get('cassandra.' . $input->getArgument('client') . '.manager');
+        $manager->create_keyspace($keyspace, array());
 
-        $output->writeln('<info>Keyspace ' . $cluster->getKeyspace() . ' successfully created at ' . $clusterServers[0] . '</info>');
+        $output->writeln('<info>Keyspace ' . $keyspace . ' successfully created at ' . $manager->getServer() . '</info>');
     }
 }

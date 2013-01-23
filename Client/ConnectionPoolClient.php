@@ -6,7 +6,7 @@ use phpcassa\Connection\ConnectionPool;
 use phpcassa\ColumnFamily;
 use phpcassa\SuperColumnFamily;
 
-class Client
+class ConnectionPoolClient
 {
     /**
      * @var \phpcassa\Connection\ConnectionPool

@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('clusters')
+                ->arrayNode('clients')
                     ->useAttributeAsKey('name')
                     ->isRequired()
                     ->requiresAtLeastOneElement()
