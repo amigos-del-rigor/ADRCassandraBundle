@@ -3,11 +3,11 @@
 namespace ADR\Bundle\CassandraBundle\Tests\Command;
 
 use Symfony\Component\Console\Application;
-use ADR\Bundle\CassandraBundle\Command\CassandraCreateKeyspaceCommand;
+use ADR\Bundle\CassandraBundle\Command\CassandraDropKeyspaceCommand;
 use Symfony\Component\Console\Tester\CommandTester;
 use Mockery as m;
 
-class CassandraCreateKeyspaceCommandTest extends \PHPUnit_Framework_TestCase
+class CassandraDropKeyspaceCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getNonInteractiveData
@@ -15,24 +15,24 @@ class CassandraCreateKeyspaceCommandTest extends \PHPUnit_Framework_TestCase
     public function testCreateKeyspaceCommand($input)
     {
         $application = new Application();
-        $application->add(new CassandraCreateKeyspaceCommand());
+        $application->add(new CassandraDropKeyspaceCommand());
 
-        $command = $application->find('cassandra:keyspace:create');
+        $command = $application->find('cassandra:keyspace:drop');
         $command->setContainer($this->getMockContainer($input));
 
         $tester = new CommandTester($command);
         $tester->execute($input);
 
-        $this->assertEquals('Keyspace ' . $input['keyspace'] . ' successfully created at #mockServer#' . PHP_EOL, $tester->getDisplay());
+        $this->assertEquals('Keyspace ' . $input['keyspace'] . ' successfully dropped at #mockServer#' . PHP_EOL, $tester->getDisplay());
     }
 
     private function getMockContainer($input)
     {
         $systemManager = m::mock('phpcassa\SystemManager');
         $systemManager
-            ->shouldReceive('create_keyspace')
+            ->shouldReceive('drop_keyspace')
             ->once()
-            ->with($input['keyspace'], array())
+            ->with($input['keyspace'])
         ;
 
         $systemManager
