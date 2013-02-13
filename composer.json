@@ -12,11 +12,15 @@
     }],
     "require": {
         "php": ">=5.3.3",
-        "symfony/framework-bundle":">=2.1.0,<2.3-dev",
+        "symfony/framework-bundle":">=2.1.0,<2.2-dev",
+        "symfony/console":">=2.1.0,<2.2-dev",
         "thobbs/phpcassa":"dev-master"
     },
     "autoload": {
         "psr-0": { "ADR\\Bundle\\CassandraBundle": "" }
+    },
+    "require-dev": {
+        "mockery/mockery": "dev-master"
     },
     "target-dir": "ADR/Bundle/CassandraBundle",
     "minimum-stability": "dev"
