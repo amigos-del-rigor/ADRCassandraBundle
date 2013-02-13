@@ -31,7 +31,7 @@ class ADRCassandraExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage child node "clusters"
+     * @expectedExceptionMessage child node "clients"
      */
     public function testEmptyConfigThrowsException()
     {
