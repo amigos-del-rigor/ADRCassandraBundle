@@ -2,6 +2,8 @@
 
 WARNING! This bundle is still at early stages of development!
 
+[![Build Status](https://travis-ci.org/amigos-del-rigor/ADRCassandraBundle.png)](https://travis-ci.org/amigos-del-rigor/ADRCassandraBundle)
+
 ## About ##
 
 This bundle integrates [phpcassa](https://github.com/thobbs/phpcassa) into your Symfony2 application.
