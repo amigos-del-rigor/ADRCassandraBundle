@@ -42,6 +42,7 @@ class ADRCassandraExtension extends Extension
     {
         $definition = new Definition('ADR\Bundle\CassandraBundle\Client\SystemManagerClient', array(
             $client['servers'][0],
+            $client['keyspace'],
         ));
 
         $container->setDefinition('cassandra.' . $name . '.manager', $definition);
