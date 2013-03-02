@@ -5,7 +5,7 @@ namespace ADR\Bundle\CassandraBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 use phpcassa\SystemManager;
 
 class CassandraDropKeyspaceCommand extends ContainerAwareCommand
@@ -30,8 +30,8 @@ class CassandraDropKeyspaceCommand extends ContainerAwareCommand
         $this
             ->setName('cassandra:keyspace:drop')
             ->setDescription('Drops the keyspace in selected client')
-            ->addArgument('client', null, InputOption::VALUE_REQUIRED, 'The cluster name in Symfony2 where keyspace will be created')
-            ->addArgument('keyspace', null, InputOption::VALUE_REQUIRED, 'The keyspace name')
+            ->addArgument('client', InputArgument::REQUIRED, 'The cluster name in Symfony2 where keyspace will be created')
+            ->addArgument('keyspace', InputArgument::REQUIRED, 'The keyspace name')
             ->setHelp(<<<EOT
 The <info>cassandra:keyspace:drop</info> command drops the configured keyspace in the selected cluster.
 

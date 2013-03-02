@@ -21,7 +21,9 @@ class CassandraCreateKeyspaceCommandTest extends \PHPUnit_Framework_TestCase
         $command->setContainer($this->getMockContainer($input));
 
         $tester = new CommandTester($command);
-        $tester->execute($input);
+        $tester->execute(
+            array_merge(array('command' => $command->getName()), $input)
+        );
 
         $this->assertEquals('Keyspace ' . $input['keyspace'] . ' successfully created at #mockServer#' . PHP_EOL, $tester->getDisplay());
     }

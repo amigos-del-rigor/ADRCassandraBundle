@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 use phpcassa\SystemManager;
 
 class CassandraCreateColumnFamilyCommand extends ContainerAwareCommand
@@ -30,8 +31,8 @@ class CassandraCreateColumnFamilyCommand extends ContainerAwareCommand
         $this
             ->setName('cassandra:columnfamily:create')
             ->setDescription('Creates the columnfamily in the default keyspace (or in the supplied keyspace) in selected cluster')
-            ->addArgument('client', null, InputOption::VALUE_REQUIRED, 'The client name in Symfony2 where keyspace will be created')
-            ->addArgument('columnfamilyname', null, InputOption::VALUE_REQUIRED, 'The ColumnFamily name that will be created')
+            ->addArgument('client', InputArgument::REQUIRED, 'The client name in Symfony2 where keyspace will be created')
+            ->addArgument('columnfamilyname', InputArgument::REQUIRED, 'The ColumnFamily name that will be created')
             ->addOption('keyspace', null, InputOption::VALUE_OPTIONAL, 'The keyspace name. If not supplied, the configured keypace in client is used')
             ->setHelp(<<<EOT
 The <info>cassandra:columnfamily:create</info> command creates the ColumnFamily in the selected client in the default keyspace, or in the supplied one if any.
