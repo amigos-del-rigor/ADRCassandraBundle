@@ -12,8 +12,8 @@
     }],
     "require": {
         "php": ">=5.3.3",
-        "symfony/framework-bundle":">=2.1.0,<2.2-dev",
-        "symfony/console":">=2.1.0,<2.2-dev",
+        "symfony/framework-bundle":">=2.2.0,<2.3-dev",
+        "symfony/console":">=2.2.0,<2.3-dev",
         "thobbs/phpcassa":"dev-master"
     },
     "require-dev": {
