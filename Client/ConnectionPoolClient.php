@@ -2,9 +2,10 @@
 
 namespace ADR\Bundle\CassandraBundle\Client;
 
+use ADR\Bundle\CassandraBundle\Client\Wrapper\ColumnFamilyWrapper;
+use ADR\Bundle\CassandraBundle\Client\Wrapper\SuperColumnFamilyWrapper;
+use ADR\Bundle\CassandraBundle\Logger\CassandraLogger;
 use phpcassa\Connection\ConnectionPool;
-use phpcassa\ColumnFamily;
-use phpcassa\SuperColumnFamily;
 
 class ConnectionPoolClient
 {
@@ -31,23 +32,41 @@ class ConnectionPoolClient
     /**
      * @var string
      */
+    private $name;
+
+    /**
+     * @var string
+     */
     private $keyspace;
 
-    public function __construct($servers, $keyspace)
+    /**
+     * @var \ADR\Bundle\CassandraBundle\Logger\CassandraLogger
+     */
+    private $logger;
+
+    /**
+     * @param string $keyspace
+     * @param string $name
+     * @param CassandraLogger $logger
+     * @param null|array $servers
+     */
+    public function __construct($keyspace, $name, CassandraLogger $logger = null, $servers = null)
     {
         $this->servers = $servers;
         $this->keyspace = $keyspace;
+        $this->name = $name;
+        $this->logger = $logger;
         $this->pool = new ConnectionPool($keyspace, $servers);
     }
 
     /**
      * @param string $columnFamily
-     * @return \phpcassa\ColumnFamily
+     * @return \ADR\Bundle\CassandraBundle\Client\Wrapper\ColumnFamilyWrapper
      */
     public function getColumnFamily($columnFamily)
     {
         if (!isset($this->columnFamilies[$columnFamily])) {
-            $this->columnFamilies[$columnFamily] = new ColumnFamily($this->pool, $columnFamily);
+            $this->columnFamilies[$columnFamily] = new ColumnFamilyWrapper($this->name, $this->logger, $this->pool, $columnFamily);
         }
 
         return $this->columnFamilies[$columnFamily];
@@ -55,12 +74,12 @@ class ConnectionPoolClient
 
     /**
      * @param string $superColumnFamily
-     * @return \phpcassa\SuperColumnFamily
+     * @return \ADR\Bundle\CassandraBundle\Client\Wrapper\SuperColumnFamilyWrapper
      */
     public function getSuperColumnFamily($superColumnFamily)
     {
         if (!isset($this->superColumnFamilies[$superColumnFamily])) {
-            $this->superColumnFamilies[$superColumnFamily] = new SuperColumnFamily($this->pool, $superColumnFamily);
+            $this->superColumnFamilies[$superColumnFamily] = new SuperColumnFamilyWrapper($this->name, $this->logger, $this->pool, $superColumnFamily);
         }
 
         return $this->superColumnFamilies[$superColumnFamily];
@@ -96,5 +115,21 @@ class ConnectionPoolClient
     public function getKeyspace()
     {
         return $this->keyspace;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }

@@ -5,12 +5,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services
     http://symfony.com/schema/dic/services/services-1.0.xsd">
+
     <parameters>
+        <parameter key="adr_cassandra.logger.class">ADR\Bundle\CassandraBundle\Logger\CassandraLogger</parameter>
         <parameter key="adr_cassandra.data_collector.class">ADR\Bundle\CassandraBundle\DataCollector\CassandraDataCollector</parameter>
     </parameters>
+
     <services>
+        <service id="adr_cassandra.logger" class="%adr_cassandra.logger.class%">
+            <tag name="monolog.logger" channel="adr_cassandra" />
+            <argument type="service" id="logger" on-invalid="null" />
+        </service>
+
         <service id="adr_cassandra.data_collector" class="%adr_cassandra.data_collector.class%" public="false">
             <tag name="data_collector" template="ADRCassandraBundle:Collector:cassandra" id="cassandra"/>
+            <argument type="service" id="adr_cassandra.logger" />
         </service>
     </services>
 

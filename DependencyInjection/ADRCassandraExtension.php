@@ -2,6 +2,7 @@
 
 namespace ADR\Bundle\CassandraBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,8 +32,10 @@ class ADRCassandraExtension extends Extension
     protected function createConnectionPoolClientService($name, array $client, ContainerBuilder $container)
     {
         $definition = new Definition('ADR\Bundle\CassandraBundle\Client\ConnectionPoolClient', array(
-            $client['servers'],
             $client['keyspace'],
+            $name,
+            new Reference('adr_cassandra.logger'),
+            $client['servers'],
         ));
 
         $container->setDefinition('cassandra.' . $name . '.pool', $definition);

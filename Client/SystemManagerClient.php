@@ -6,6 +6,9 @@ use phpcassa\SystemManager;
 
 class SystemManagerClient extends SystemManager
 {
+    /**
+     * @var string
+     */
     private $server;
 
     /**
@@ -13,6 +16,10 @@ class SystemManagerClient extends SystemManager
      */
     private $keyspace;
 
+    /**
+     * @param string $server
+     * @param string $keyspace
+     */
     public function __construct($server, $keyspace)
     {
         $this->server = $server;
@@ -20,11 +27,17 @@ class SystemManagerClient extends SystemManager
         parent::__construct($server);
     }
 
+    /**
+     * @param string $server
+     */
     public function setServer($server)
     {
         $this->server = $server;
     }
 
+    /**
+     * @return string
+     */
     public function getServer()
     {
         return $this->server;

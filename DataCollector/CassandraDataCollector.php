@@ -11,6 +11,7 @@
 
 namespace ADR\Bundle\CassandraBundle\DataCollector;
 
+use ADR\Bundle\CassandraBundle\Logger\CassandraLogger;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,16 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CassandraDataCollector extends DataCollector
 {
+    /**
+     * @var \ADR\Bundle\CassandraBundle\Logger\CassandraLogger
+     */
+    protected $logger;
+
+    public function __construct(CassandraLogger $logger)
+    {
+        $this->logger = $logger;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -34,8 +45,9 @@ class CassandraDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
-//            'commands' => null !== $this->logger ? $this->logger->getCommands() : array(),
             'commands' => array(),
+            'command_count' => $this->logger->getTotalCommands(),
+            'total_time' => $this->logger->getTotalTime()
         );
     }
 
@@ -56,7 +68,7 @@ class CassandraDataCollector extends DataCollector
      */
     public function getCommandCount()
     {
-        return count($this->data['commands']);
+        return $this->data['command_count'];
     }
 
     /**
@@ -66,11 +78,6 @@ class CassandraDataCollector extends DataCollector
      */
     public function getTime()
     {
-        $time = 0;
-        foreach ($this->data['commands'] as $command) {
-            $time += $command['executionMS'];
-        }
-
-        return $time;
+        return $this->data['total_time'];
     }
 }
