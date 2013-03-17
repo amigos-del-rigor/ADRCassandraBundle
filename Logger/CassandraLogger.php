@@ -40,7 +40,7 @@ class CassandraLogger
     private function buildLoggingString($clientName, AbstractColumnFamily $columnFamily, $name, array $arguments)
     {
         $logString = '';
-        $logString .= 'Client "' . $clientName . '"';
+        $logString .= 'Client "' . $clientName . '" ';
         if ($columnFamily instanceof SuperColumnFamily) {
             $logString .= 'SuperColumnFamily ';
         } else {
