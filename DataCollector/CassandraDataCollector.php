@@ -45,7 +45,7 @@ class CassandraDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
-            'commands' => array(),
+            'commands' => $this->logger->getCommands(),
             'command_count' => $this->logger->getTotalCommands(),
             'total_time' => $this->logger->getTotalTime()
         );

@@ -14,6 +14,8 @@ class CassandraLogger
 
     private $totalTime = 0.0;
 
+    private $commands = array();
+
     /**
      * @param LoggerInterface $logger
      */
@@ -34,6 +36,7 @@ class CassandraLogger
         $this->totalCommands++;
         $this->totalTime += $duration;
 
+//        $this->accumulateDataForProfiler();
         $this->logger->info($this->buildLoggingString($clientName, $columnFamily, $name, $arguments));
     }
 
@@ -51,7 +54,7 @@ class CassandraLogger
         $logString .= ' ' . strtoupper($name);
 
         if (!empty($arguments)) {
-            $logString .= ' [' . implode(', ', $arguments) . ']';
+            $logString .= ' ' . json_encode($arguments);
         }
 
         return $logString;
@@ -65,5 +68,10 @@ class CassandraLogger
     public function getTotalTime()
     {
         return $this->totalTime;
+    }
+
+    public function getCommands()
+    {
+        return $this->commands;
     }
 }
