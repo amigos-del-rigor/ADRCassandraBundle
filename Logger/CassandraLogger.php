@@ -19,7 +19,7 @@ class CassandraLogger
     /**
      * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger = null)
     {
         $this->logger = $logger;
     }
@@ -36,14 +36,75 @@ class CassandraLogger
         $this->totalCommands++;
         $this->totalTime += $duration;
 
-//        $this->accumulateDataForProfiler();
-        $this->logger->info($this->buildLoggingString($clientName, $columnFamily, $name, $arguments));
+        $this->accumulateDataForProfiler($clientName, $columnFamily, $name, $arguments, $duration);
+
+        if (null !== $this->logger) {
+            $this->logger->info($this->buildLoggingString($clientName, $columnFamily, $name, $arguments));
+        }
     }
 
+    /**
+     * @return int
+     */
+    public function getTotalCommands()
+    {
+        return $this->totalCommands;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalTime()
+    {
+        return $this->totalTime;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCommands()
+    {
+        return $this->commands;
+    }
+
+    /**
+     * @param string $clientName
+     * @param AbstractColumnFamily $columnFamily
+     * @param string $name
+     * @param array $arguments
+     * @return string
+     */
+    private function accumulateDataForProfiler($clientName, AbstractColumnFamily $columnFamily, $name, array $arguments, $duration)
+    {
+        if ($columnFamily instanceof SuperColumnFamily) {
+            $type = 'SuperColumnFamilies';
+        } else {
+            $type = 'ColumnFamilies';
+        }
+
+        $text = '"' . $columnFamily->column_family . '" ' . strtoupper($name);
+        if (!empty($arguments)) {
+            $text .= ' ' . json_encode($arguments);
+        }
+
+        $this->commands[$clientName][$type][] = array(
+            'cmd'  => $text,
+            'time' => $duration,
+        );
+    }
+
+    /**
+     * @param string $clientName
+     * @param AbstractColumnFamily $columnFamily
+     * @param string $name
+     * @param array $arguments
+     * @return string
+     */
     private function buildLoggingString($clientName, AbstractColumnFamily $columnFamily, $name, array $arguments)
     {
         $logString = '';
         $logString .= 'Client "' . $clientName . '" ';
+
         if ($columnFamily instanceof SuperColumnFamily) {
             $logString .= 'SuperColumnFamily ';
         } else {
@@ -58,20 +119,5 @@ class CassandraLogger
         }
 
         return $logString;
-    }
-
-    public function getTotalCommands()
-    {
-        return $this->totalCommands;
-    }
-
-    public function getTotalTime()
-    {
-        return $this->totalTime;
-    }
-
-    public function getCommands()
-    {
-        return $this->commands;
     }
 }

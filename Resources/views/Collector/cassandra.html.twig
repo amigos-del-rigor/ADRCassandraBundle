@@ -32,22 +32,26 @@
 {% block panel %}
     <h2>Commands</h2>
 
-    {% if not collector.commandcount %}
+    {% if collector.commandcount == 0%}
         <p><em>No commands.</em></p>
     {% else %}
-        <ul class="alt">
-            {% for command in collector.commands %}
-                <li class="{{ cycle(['odd', 'even'], loop.index) }}{% if command.error %} error{% endif %}">
+        {% for connection, data in collector.commands %}
+            <h3>Connection <em>{{ connection }}</em></h3>
+            {% for columntype, commands in data %}
+                <em>{{ columntype }}</em>
+                <ul class="alt">
+                {% for command in commands %}
+                <li class="{{ cycle(['odd', 'even'], loop.index) }}">
                     <div>
                         <code>{{ command.cmd }}</code>
                     </div>
                     <small>
-                        <strong>Time</strong>: {{ '%0.2f'|format(command.executionMS) }} ms
-                        <strong>Connection</strong>: {{ command.conn }}
-                        {% if command.error %}<strong>Error</strong>: {{ command.error }}{% endif %}
+                        <strong>Time</strong>: {{ '%0.2f'|format(command.time) }} ms
                     </small>
-                </li>
+                    </li>
+                {% endfor %}
+                </ul>
             {% endfor %}
-        </ul>
+        {% endfor %}
     {% endif %}
 {% endblock %}
