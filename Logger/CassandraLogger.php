@@ -72,6 +72,7 @@ class CassandraLogger
      * @param AbstractColumnFamily $columnFamily
      * @param string $name
      * @param array $arguments
+     * @param float duration
      * @return string
      */
     private function accumulateDataForProfiler($clientName, AbstractColumnFamily $columnFamily, $name, array $arguments, $duration)
