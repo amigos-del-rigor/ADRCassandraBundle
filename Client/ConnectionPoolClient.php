@@ -45,12 +45,12 @@ class ConnectionPoolClient
     private $logger;
 
     /**
-     * @param string $keyspace
      * @param string $name
+     * @param array $servers
+     * @param string $keyspace
      * @param CassandraLogger $logger
-     * @param null|array $servers
      */
-    public function __construct($keyspace, $name, CassandraLogger $logger = null, $servers = null)
+    public function __construct($name, $servers, $keyspace, CassandraLogger $logger)
     {
         $this->servers = $servers;
         $this->keyspace = $keyspace;

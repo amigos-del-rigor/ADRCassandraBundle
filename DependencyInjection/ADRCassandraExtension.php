@@ -32,10 +32,10 @@ class ADRCassandraExtension extends Extension
     protected function createConnectionPoolClientService($name, array $client, ContainerBuilder $container)
     {
         $definition = new Definition('ADR\Bundle\CassandraBundle\Client\ConnectionPoolClient', array(
-            $client['keyspace'],
             $name,
-            new Reference('adr_cassandra.logger'),
             $client['servers'],
+            $client['keyspace'],
+            new Reference('adr_cassandra.logger'),
         ));
 
         $container->setDefinition('cassandra.' . $name . '.pool', $definition);
@@ -48,6 +48,10 @@ class ADRCassandraExtension extends Extension
             $client['keyspace'],
         ));
 
+        /**
+         * Setting to Lazy service as \phpcassa\SystemManager connects to Cassandra in __construct
+         */
+        $definition->setLazy(true);
         $container->setDefinition('cassandra.' . $name . '.manager', $definition);
     }
 }

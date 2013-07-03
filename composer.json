@@ -12,16 +12,22 @@
     }],
     "require": {
         "php": ">=5.3.3",
-        "symfony/framework-bundle":"~2.2",
-        "symfony/console":"~2.2",
-        "thobbs/phpcassa":"~1.0"
+        "symfony/framework-bundle":"~2.3",
+        "symfony/console":"~2.3",
+        "thobbs/phpcassa":"~1.0",
+        "symfony/proxy-manager-bridge": "~2.3"
     },
     "require-dev": {
-        "mockery/mockery":"dev-master"
+        "mockery/mockery":"0.*"
     },
     "autoload": {
         "psr-0": { "ADR\\Bundle\\CassandraBundle": "" }
     },
     "target-dir": "ADR/Bundle/CassandraBundle",
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
 }
